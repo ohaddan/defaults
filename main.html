@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/task.css">
+    <script src="code/helper_functions.js"></script>
+    <script src="code/trial_manager.js"></script>
+
+    <title>Choices task</title>
+</head>
+
+<body onload="init()">
+
+<div class="head_container">
+    <!--<h1>header title</h1>-->
+    <div id="head_choice">
+        <p>Choose the alternative you prefer:</p>
+    </div>
+    <div id="head_default_risky">
+        The system has assigned you a choice:<b> <span class="risky_probability_text">50%</span> winning <span class='risky_probability_reward'>$10</span> </b>
+        <p style="text-align: center; justify-content: center">
+            <span width= "5%" > <button style="padding-left: 45%" id = 'default_ok_button' class="default_ok" type="button">OK</button> </span>
+            <button width= "5%"style="padding-left: 30%"class="default_switch" type="button">switch</button>
+        </p>
+    </div>
+    <div id="header_between_trials" style="display: none;">
+        <p>Press to continue:</p>
+    </div>
+</div>
+
+<div id="fixation_holder" style="display: none">
+    <p></p>
+    <table>
+        <tr>
+            <td><button type="button" id="fixation_text" onclick="next_trial()">Continue</button></td>
+        </tr>
+    </table>
+</div>
+
+<!--<div id="trial_content" style="display: none">-->
+<div id="trial_content" style="display: block">
+    <table id="DEFAULT_NO">
+        <!--text of gains and probabilities-->
+        <tr>
+            <td id="safe_text" class="lottery_text default_text" onclick="safe_choice()">
+                <span id="safe_text_probability" class="probability">100%</span>
+                </br>winning
+                </br>
+                <span class="money">$5</span>
+            </td>
+            <td class="table_cell_place_holder">&nbsp;</td>
+            <td id="risky_text" class="lottery_text blur_text" onclick="risky_choice()">
+                <span class="probability risky_probability_text">50%</span>
+                </br>winning
+                </br>
+                <span class="money risky_probability_reward">$10</span>
+            </td>
+        </tr>
+        <tr>
+            <td id="safe_image" class="img_holder">
+                <img id='safe_probability_image' class="probability_reward_image" src="media/probability_images/p_100.png">
+                <img id='safe_reward_image' class="probability_reward_image" src="media/reward_images/r_5.PNG">
+            </td>
+            <td class="table_cell_place_holder">&nbsp;</td>
+            <td id="risky_image"  class="img_holder">
+                <img id='risky_probability_image' class="probability_reward_image blur_image" src="">
+                <img id='risky_reward_image' class="probability_reward_image blur_image" src="">
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

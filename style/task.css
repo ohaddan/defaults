@@ -1,0 +1,131 @@
+head{
+    font-size: 1vw;
+    display: block;
+    overflow-x: auto
+}
+
+td{
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+.img_holder{
+    width: auto;
+    display: inline-block;
+}
+
+.img_holder img{
+    width: 30%; /* Will shrink image to 30% of its original width */
+    height: auto;
+}
+
+.head_container{
+    padding: 0.01em 16px;
+    color: #3d3d3d;
+    background-color: rgba(92, 102, 108, 0.33);
+}
+
+table{
+    padding-left: 20%;
+    /*padding-top: 5%;*/
+    align-content: center;
+    text-align: center;
+    align-content: center;
+}
+
+.table_cell_place_holder{
+    width:20%;
+}
+
+#trial_content{
+    padding-top: 5%;
+    width:80%;
+}
+
+.money{
+    font-weight: bold;
+}
+
+.probability{
+    font-family: "Lucida Console", Monaco, monospace;
+}
+
+.lottery_text{
+    background-color: rgba(238, 239, 231, 0.97);
+    border-style: solid;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    line-height: 1.5;
+}
+
+/* Start - Classes for alternatives that can be chosen*/
+.choice:hover{
+    background-color: rgba(186, 187, 180, 0.97);
+    cursor: pointer;
+}
+.choice:active{
+    background-color: rgba(115, 116, 112, 0.97);
+}
+/* End - Classes for alternatives that can be chosen*/
+
+.probability_reward_image{
+    height: 10%;
+}
+
+#fixation_holder{
+    width: 40%;
+    padding-top: 5%;
+    padding-left: 30%;
+    text-align: center;
+    color: #000;
+}
+
+#fixation_text{
+    font-weight: bold;
+    background-color: rgba(200, 200, 200, 0.87);
+}
+
+#fixation_text:hover{
+    background-color: #6a6a6a;
+    cursor: pointer;
+}
+
+.default_text{
+    border-radius: 5px;
+    border-width: 10px;
+    border-style: ridge;
+    border-color: red;
+}
+
+.blur_image {
+    /*-webkit-filter: blur(0.75px); !* Safari 6.0 - 9.0 *!*/
+    /*filter: blur(0.75px);*/
+    opacity: 0.4;
+}
+
+.blur_text{
+    color: #868686;
+    background-color: #ccc;
+}
+
+.default_ok{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: x-large;
+}
+.default_ok:hover{
+    background-color: #5ad25f;
+}
+
+.default_switch{
+
+    border: none;
+    color: grey;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: small;
+}
