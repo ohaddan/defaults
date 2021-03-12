@@ -11,17 +11,38 @@
 
 <body onload="init()">
 
-<div class="head_container">
-    <!--<h1>header title</h1>-->
-    <div id="head_choice">
+<div class="head_container" class="instruction_text">
+
+    <!--Here are 3 types of headers that are shown and displayed according to the current trials state:
+        head_free_choice: a free choice without default
+        head_default: header to be presented when a default option is set
+        header_wait: presented between trials-->
+
+    <div id="head_free_choice" style="display: none">
         <p>Choose the alternative you prefer:</p>
     </div>
-    <div id="head_default_risky">
-        The system has assigned you a choice:<b> <span class="risky_probability_text">50%</span> winning <span class='risky_probability_reward'>$10</span> </b>
-        <p style="text-align: center; justify-content: center">
-            <span width= "5%" > <button style="padding-left: 45%" id = 'default_ok_button' class="default_ok" type="button">OK</button> </span>
-            <button width= "5%"style="padding-left: 30%"class="default_switch" type="button">switch</button>
+
+    <div id="head_default" style="display: none" class="instruction_text">
+        The system has recommended you a choice:
+        <b> <span class="risky_probability_text">50%</span>
+            winning
+            <span class='risky_probability_reward'>$10</span>
+        </b>
+        <p class="center_text"  style="padding-left:35%;">
+            <span width= "5%" >
+                <button  style="padding-left: 5%; padding-right: 5%" id='default_ok_button' class="default_ok"
+                        type="button" onclick="choice_default()">OK</button>
+            </span>
+
+            <span width= "5%" style="padding-left: 10%;">
+                <button style="padding-left: 5%; padding-right: 5%" class="default_switch" type="button"
+                        onclick="choice_switch()" onmouseover="flash_the_default()" onmouseleave="stop_default_flash()">Choose the unrecommended alternative</button>
+            </span>
         </p>
+    </div>
+
+    <div id="header_wait" style="display: none;">
+        <p>Wait...</p>
     </div>
     <div id="header_between_trials" style="display: none;">
         <p>Press to continue:</p>
@@ -37,8 +58,15 @@
     </table>
 </div>
 
-<!--<div id="trial_content" style="display: none">-->
-<div id="trial_content" style="display: block">
+<div id="choice_presentation" style="display: none" class="center_text" style="padding-left: 45%">
+    You chose:
+    <br>
+    $<span id="choice_presentation_amount"></span> with <span id="choice_presentation_probability"></span>%
+
+</div>
+
+<div id="trial_content" style="display: none">
+<!--<div id="trial_content" style="display: block">-->
     <table id="DEFAULT_NO">
         <!--text of gains and probabilities-->
         <tr>

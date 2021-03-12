@@ -1,29 +1,30 @@
+/*------------------------------------------------------------------------------------------------
+Head, headers, general
+------------------------------------------------------------------------------------------------*/
 head{
-    font-size: 1vw;
+    /*font-size: 1vw;*/
     display: block;
     overflow-x: auto
 }
 
-td{
-    padding-top: 2%;
-    padding-bottom: 2%;
-}
-
-.img_holder{
-    width: auto;
-    display: inline-block;
-}
-
-.img_holder img{
-    width: 30%; /* Will shrink image to 30% of its original width */
-    height: auto;
-}
-
 .head_container{
-    padding: 0.01em 16px;
+    padding: 2em 16px;
     color: #3d3d3d;
     background-color: rgba(92, 102, 108, 0.33);
 }
+
+.instruction_text{
+    font-size: large;
+}
+
+.center_text{
+    text-align: center;
+}
+
+
+/*------------------------------------------------------------------------------------------------
+Tables
+------------------------------------------------------------------------------------------------*/
 
 table{
     padding-left: 20%;
@@ -31,6 +32,11 @@ table{
     align-content: center;
     text-align: center;
     align-content: center;
+}
+
+td{
+    padding-top: 2%;
+    padding-bottom: 2%;
 }
 
 .table_cell_place_holder{
@@ -42,12 +48,30 @@ table{
     width:80%;
 }
 
+/*------------------------------------------------------------------------------------------------
+Stimuli - Images and text
+------------------------------------------------------------------------------------------------*/
+
+.img_holder{
+    width: auto;
+    display: inline-block;
+}
+
+.img_holder img{
+    width: 30%; /* Will shrink image to 30% of its original width */
+    height: auto;
+}
+
 .money{
     font-weight: bold;
 }
 
 .probability{
     font-family: "Lucida Console", Monaco, monospace;
+}
+
+.probability_reward_image{
+    height: 10%;
 }
 
 .lottery_text{
@@ -58,38 +82,6 @@ table{
     line-height: 1.5;
 }
 
-/* Start - Classes for alternatives that can be chosen*/
-.choice:hover{
-    background-color: rgba(186, 187, 180, 0.97);
-    cursor: pointer;
-}
-.choice:active{
-    background-color: rgba(115, 116, 112, 0.97);
-}
-/* End - Classes for alternatives that can be chosen*/
-
-.probability_reward_image{
-    height: 10%;
-}
-
-#fixation_holder{
-    width: 40%;
-    padding-top: 5%;
-    padding-left: 30%;
-    text-align: center;
-    color: #000;
-}
-
-#fixation_text{
-    font-weight: bold;
-    background-color: rgba(200, 200, 200, 0.87);
-}
-
-#fixation_text:hover{
-    background-color: #6a6a6a;
-    cursor: pointer;
-}
-
 .default_text{
     border-radius: 5px;
     border-width: 10px;
@@ -98,8 +90,6 @@ table{
 }
 
 .blur_image {
-    /*-webkit-filter: blur(0.75px); !* Safari 6.0 - 9.0 *!*/
-    /*filter: blur(0.75px);*/
     opacity: 0.4;
 }
 
@@ -110,22 +100,96 @@ table{
 
 .default_ok{
     background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    text-decoration: none;
-    display: inline-block;
     font-size: x-large;
+    border-color: black;
+    border-width: thin;
+    text-align: center;
+    text-shadow: 1.5px 1.5px rgba(1, 46, 27, 0.3);
+    box-shadow: -1px 1px #04461b, 1px 1px #04461b, -1px 1px #04461b;
+    cursor: pointer;
 }
 .default_ok:hover{
-    background-color: #5ad25f;
+    background-color: #6dff72;
+}
+
+default_ok:active{
+    color: #4bb150;
 }
 
 .default_switch{
-
-    border: none;
     color: grey;
     text-align: center;
-    text-decoration: none;
     display: inline-block;
     font-size: small;
+    cursor: pointer;
+}
+
+.default_switch:hover{
+    color: #d1d1d1;
+    border:none;
+}
+
+default_switch:active{
+    color: #909090;
+}
+/*------------------------------------------------------------------------------------------------
+Choices
+------------------------------------------------------------------------------------------------*/
+
+.choice:hover{
+    background-color: rgba(186, 187, 180, 0.97);
+    cursor: pointer;
+}
+.choice:active{
+    background-color: rgba(115, 116, 112, 0.97);
+}
+
+/*Change color slowly*/
+.animate_to_dark{
+    -webkit-transition: all 400ms ease-in-out;
+    -moz-transition: all 400ms ease-in-out;
+    -o-transition: all 400ms ease-in-out;
+    -ms-transition: all 400ms ease-in-out;
+    transition: all 400ms ease-in-out;
+    background: #33aeaa;
+    /*background: #33aeaa;*/
+}
+
+.animate_to_bright{
+    -webkit-transition: all 400ms ease-in-out;
+    -moz-transition: all 400ms ease-in-out;
+    -o-transition: all 400ms ease-in-out;
+    -ms-transition: all 400ms ease-in-out;
+    transition: all 500ms ease-in-out;
+    background: #6dff72;
+}
+
+/*------------------------------------------------------------------------------------------------
+Fixation between trials
+------------------------------------------------------------------------------------------------*/
+
+#fixation_holder{
+    width: 40%;
+    padding-top: 5%;
+    padding-left: 40%;
+    text-align: center;
+    color: #000;
+}
+
+#fixation_text{
+    font-weight: bold;
+    background-color: rgba(200, 200, 200, 0.87);
+    font-size: large;
+}
+
+#fixation_text:hover{
+    background-color: #6a6a6a;
+    cursor: pointer;
+}
+
+#choice_presentation{
+    padding-left: 4%;
+    padding-top: 2%;
+    font-size: x-large;
+    line-height: 1.6;
 }

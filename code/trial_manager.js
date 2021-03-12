@@ -3,15 +3,21 @@
 //######################################################################################################################
 const RISKY_REWARDS = [5, 6, 7, 8, 10, 12, 14, 16, 19, 23, 27, 31, 37, 44, 52, 61, 73, 86, 101, 120];
 const RISKY_PROBABILITIES = [25, 50, 75];
-DEFUALT_TYPE_RISKY = 'RISKY';
-DEFUALT_TYPE_SAFE = 'SAFE';
-DEFUALT_TYPE_NON = 'NO_DEFAULT';
+const DEFAULT_TYPE_RISKY = 'RISKY';
+const DEFAULT_TYPE_SAFE = 'SAFE';
+const DEFAULT_TYPE_NON = 'NO_DEFAULT';
+const CHOICE_RISKY = 'CHOICE_RISKY';
+const CHOICE_SAFE = 'CHOICE_SAFE';
+DEFAULT_P = 100;
+DEFAULT_R = 5;
+
+
 let TRIAL_TYPE;
 if (Math.random()>0.5){
-    TRIAL_TYPE = [DEFUALT_TYPE_SAFE, DEFUALT_TYPE_NON];
+    TRIAL_TYPE = [DEFAULT_TYPE_SAFE, DEFAULT_TYPE_NON];
 }
 else {
-    TRIAL_TYPE = [DEFUALT_TYPE_RISKY, DEFUALT_TYPE_NON];
+    TRIAL_TYPE = [DEFAULT_TYPE_RISKY, DEFAULT_TYPE_NON];
 }
 
 const TRIAL_LIST = cartesian(RISKY_PROBABILITIES, RISKY_REWARDS, TRIAL_TYPE);
@@ -26,8 +32,8 @@ const BUTTON_DISABLE_TIME = 1500;
 
 
 function init(){
-    // document.getElementById('trial_content').style.display = 'none';
-    document.getElementById('fixation_holder').style.display = 'none';
+    hide_element_with_id('trial_content');
+    hide_element_with_id('fixation_holder');
     trial_number = 0;
     next_trial();
     set_trial_risky_reward_probability();
@@ -35,7 +41,7 @@ function init(){
     //     switch_risky_and_safe();
     // }
     document.getElementById('trial_content').style.display = 'block';
-    blink();
+    // blink();
 }
 
 //######################################################################################################################
@@ -69,8 +75,8 @@ function set_trial(p, r){
 
 function hide_trial(){
     hide_element_with_id('trial_content');
-    unhide_element_with_id('fixation_holder');
-    unhide_element_with_id('between_trials');
+    hide_element_with_id('head_free_choice');
+    hide_element_with_id('head_default');
 }
 
 function set_trial_risky_reward_probability(){
@@ -80,21 +86,23 @@ function set_trial_risky_reward_probability(){
     set_trial(p, r);
 }
 
-DEFUALT_TYPE_RISKY = 'RISKY';
-DEFUALT_TYPE_SAFE = 'SAFE';
-DEFUALT_TYPE_NON = 'NO_DEFAULT';
 function next_trial(){
+    default_reset();
     hide_element_with_id('fixation_holder');
     hide_element_with_id('header_between_trials');
-    if(current_trial_type==DEFUALT_TYPE_NON){
-        set_choice_trial();
+    current_trial_type=TESTING_DEFAULT;
+    if(current_trial_type==DEFAULT_TYPE_NON){
+        unhide_element_with_id("head_free_choice");
+        hide_element_with_id("head_default");
+        set_free_choice_trial();
     }
     else{
-        default_reset();
-        if(current_trial_type==DEFUALT_TYPE_SAFE){
+        hide_element_with_id("head_free_choice");
+        unhide_element_with_id("head_default");
+        if(current_trial_type==DEFAULT_TYPE_SAFE){
             set_default_safe();
         }
-        else if(current_trial_type==DEFUALT_TYPE_RISKY){
+        else if(current_trial_type==DEFAULT_TYPE_RISKY){
             set_default_risky();
         }
     }
@@ -102,43 +110,83 @@ function next_trial(){
 }
 
 function enable_continue_button(){
+    hide_element_with_id('header_wait');
+    unhide_element_with_id('header_between_trials');
     document.getElementById('fixation_text').disabled = false;
-    document.getElementById('fixation_text').innerText = 'Continue'
+    document.getElementById('fixation_text').innerText = 'Continue';
 }
 
-function choice(){
-    hide_trial();
+    //---------------------------------------------------------------------------------
+    // Manage choices
+    //---------------------------------------------------------------------------------
+function implement_choice(){
+    hide_element_with_id('choice_presentation');
     trial_number ++;
     set_trial_risky_reward_probability();
-    document.getElementById('fixation_text').disabled = true;
-    setTimeout(enable_continue_button, BUTTON_DISABLE_TIME);
-    document.getElementById('fixation_text').innerText = '+'
-}
 
-function alternative_choice(){
-    if (current_trial_type==DEFUALT_TYPE_NON){
-        choice();
+    //// Present fixation + (currently disabled)
+    //unhide_element_with_id('header_wait');
+    // document.getElementById('fixation_text').disabled = true;
+    // setTimeout(enable_continue_button, BUTTON_DISABLE_TIME);
+    // document.getElementById('fixation_text').innerText = '+'
+
+    // Set fixation screen
+
+    unhide_element_with_id('fixation_holder');
+    document.getElementById('fixation_text').disabled = false;
+    document.getElementById('fixation_text').innerText = 'Continue';
+
+}
+        //---------------------------------------------------------------------------------
+        // Manage choice in a FREE CHOICE trial
+        //---------------------------------------------------------------------------------
+function risky_choice(){
+    if(current_trial_type==DEFAULT_TYPE_NON) { // Otherwise, we don't get actual choices just "continue, switch"
+        write_trial_then_implement_choice(CHOICE_RISKY);
     }
 }
 
-function risky_choice(){
-    alternative_choice();
-}
-
 function safe_choice(){
-    alternative_choice();
+    if(current_trial_type==DEFAULT_TYPE_NON) { // Otherwise, we don't get actual choices just "continue, switch"
+        write_trial_then_implement_choice(CHOICE_SAFE);
+    }
 }
 
+        //---------------------------------------------------------------------------------
+        // Manage choice in a DEFAULTS trials
+        //---------------------------------------------------------------------------------
+let TESTING_DEFAULT = DEFAULT_TYPE_SAFE;
+function choice_default(){
+    current_trial_type=TESTING_DEFAULT;
+    if(current_trial_type==DEFAULT_TYPE_SAFE){
+        write_trial_then_implement_choice(CHOICE_SAFE);
+    }
+    else if(current_trial_type==DEFAULT_TYPE_RISKY){
+        write_trial_then_implement_choice(CHOICE_RISKY);
+    }
+}
+
+function choice_switch(){
+    current_trial_type=TESTING_DEFAULT;
+    if(current_trial_type==DEFAULT_TYPE_SAFE){
+        write_trial_then_implement_choice(CHOICE_RISKY);
+    }
+    else if(current_trial_type==DEFAULT_TYPE_RISKY){
+        write_trial_then_implement_choice(CHOICE_SAFE);
+    }
+}
 //######################################################################################################################
 // Set default
 //######################################################################################################################
 
-function set_choice_trial(){
+function set_free_choice_trial(){
     /**
      * Adjust the css classes to visualize a trial with free choice (mainly hover and click effect)
      */
     addClass(document.getElementById("risky_text"), "choice");
     addClass(document.getElementById("safe_text"), "choice");
+    unhide_element_with_id("head_free_choice");
+    hide_element_with_id("head_default");
 
 }
 

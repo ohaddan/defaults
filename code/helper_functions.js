@@ -30,12 +30,20 @@ function hasClass(el, className)
     return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
 }
 
+function addClassToElemId(id, className){
+    addClass(document.getElementById(id), className)
+}
+
 function addClass(el, className)
 {
     if (el.classList)
         el.classList.add(className)
     else if (!hasClass(el, className))
         el.className += " " + className;
+}
+
+function removeClassToElemId(id, className){
+    removeClass(document.getElementById(id), className)
 }
 
 function removeClass(el, className)
@@ -62,4 +70,59 @@ function hide_element_with_id(id){
 
 function unhide_element_with_id(id){
     document.getElementById(id).style.display = 'block';
+}
+
+
+//##################################################################################################################
+// Flash the default
+//##################################################################################################################
+var is_flash_default = false;
+function flash_the_default(){
+    is_flash_default = true;
+    continue_flushing_default(0);
+}
+
+function continue_flushing_default(toDark=1){
+    if(is_flash_default){
+        document.getElementById('default_ok_button').innerText = 'Sure?';
+        if (toDark==1){
+            removeClassToElemId('default_ok_button', 'animate_to_bright');
+            addClassToElemId('default_ok_button','animate_to_dark');
+            setTimeout(continue_flushing_default, 400, 0);
+        }
+        else{
+            removeClassToElemId('default_ok_button', 'animate_to_dark');
+            addClassToElemId('default_ok_button','animate_to_bright');
+            setTimeout(continue_flushing_default, 400, 1);
+        }
+    }
+}
+
+function stop_default_flash(){
+    is_flash_default = false;
+    document.getElementById('default_ok_button').innerText = 'OK';
+    removeClassToElemId('default_ok_button', 'animate_to_dark');
+    removeClassToElemId('default_ok_button', 'animate_to_bright');
+}
+
+//##################################################################################################################
+// Present current choice
+//##################################################################################################################
+const CHOICE_PRESENTATION_TIME = 1500;
+function write_trial_then_implement_choice(choice){
+    display_choice(choice);
+    setTimeout(implement_choice, CHOICE_PRESENTATION_TIME);
+}
+
+function display_choice(choice){
+    let p = DEFAULT_P;
+    let r = DEFAULT_R;
+    if(choice==CHOICE_RISKY){
+        p = TRIAL_LIST[trial_number][0];
+        r = TRIAL_LIST[trial_number][1];
+    }
+    document.getElementById('choice_presentation_amount').innerText = r;
+    document.getElementById('choice_presentation_probability').innerText = p;
+    hide_trial();
+    unhide_element_with_id('choice_presentation');
 }
