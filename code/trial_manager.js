@@ -69,8 +69,8 @@ function set_trial(p, r){
         reward_text[i].textContent = '$' + r;
     };
 
-    document.getElementById('risky_probability_image').src = PROBABILITY_IMAGE_PATH + "p_" + p + ".png";
-    document.getElementById('risky_reward_image').src = REWARD_IMAGE_PATH + "r_" + r + ".png";
+    document.getElementById('risky_probability_image').src = PROBABILITY_IMAGE_PATH + "p_" + p + ".PNG";
+    document.getElementById('risky_reward_image').src = REWARD_IMAGE_PATH + "r_" + r + ".PNG";
 }
 
 function hide_trial(){
