@@ -12,30 +12,29 @@
 <body onload="init()">
 
 <div class="head_container" class="instruction_text">
-
     <!--Here are 3 types of headers that are shown and displayed according to the current trials state:
         head_free_choice: a free choice without default
         head_default: header to be presented when a default option is set
         header_wait: presented between trials-->
 
-    <div id="head_free_choice" style="display: none">
+    <div id="head_free_choice" style="display: none" class="instruction_text" >
         <p>Choose the alternative you prefer:</p>
     </div>
 
-    <div id="head_default" style="display: none" class="instruction_text">
+    <div id="head_default" class="instruction_text" style="display: none" >
         The system has recommended you a choice:
-        <b> <span class="risky_probability_text">50%</span>
+        <b> <span id="risky_probability_text_head">50%</span>
             winning
-            <span class='risky_probability_reward'>$10</span>
+            <span id='risky_probability_reward_head'>$10</span>
         </b>
-        <p class="center_text"  style="padding-left:35%;">
-            <span width= "5%" >
+        <p class="center_text"  style="padding-left:15%;">
+            <span>
                 <button  style="padding-left: 5%; padding-right: 5%" id='default_ok_button' class="default_ok"
                         type="button" onclick="choice_default()">OK</button>
             </span>
 
-            <span width= "5%" style="padding-left: 10%;">
-                <button style="padding-left: 5%; padding-right: 5%" class="default_switch" type="button"
+            <span style="padding-left: 10%;">
+                <button class="default_switch" type="button"
                         onclick="choice_switch()" onmouseover="flash_the_default()" onmouseleave="stop_default_flash()">Choose the unrecommended alternative</button>
             </span>
         </p>
@@ -78,10 +77,10 @@
             </td>
             <td class="table_cell_place_holder">&nbsp;</td>
             <td id="risky_text" class="lottery_text blur_text" onclick="risky_choice()">
-                <span class="probability risky_probability_text">50%</span>
+                <span id="risky_probability_text_body" class="probability">50%</span>
                 </br>winning
                 </br>
-                <span class="money risky_probability_reward">$10</span>
+                <span id="risky_probability_reward_body" class="money">$10</span>
             </td>
         </tr>
         <tr>
