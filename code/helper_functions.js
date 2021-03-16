@@ -110,6 +110,12 @@ function stop_default_flash(){
 //##################################################################################################################
 const CHOICE_PRESENTATION_TIME = 1500;
 function write_trial_then_implement_choice(choice){
+    if(choice==CHOICE_RISKY){
+        log_risky_choice(true);
+    }
+    else{
+        log_risky_choice(false);
+    }
     display_choice(choice);
     setTimeout(implement_choice, CHOICE_PRESENTATION_TIME);
 }

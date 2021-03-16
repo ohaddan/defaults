@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="instructions_style.css">
+    <title>Thank you</title>
+    <script>
+        let current_url = new URL(window.location.href);
+        let url_params = JSON.parse(atob(current_url.searchParams.get('q')));
+        let p = url_params['p'];
+        let r = url_params['r'];
+        document.getElementById('probability').innerText = p;
+        document.getElementById('reward').innerText = r;
+    </script>
+</head>
+
+
+<body>
+
+<div class="left_bar">
+</div>
+
+<div class="right_bar">
+</div>
+
+<div class="top_bar">
+</div>
+
+<div id="page_title">
+    The task has ended.
+    <br>
+    Thank you for your participation!
+</div>
+
+<div id="instructions"><br>
+
+    The trial randomly chosen from your choices is:
+    <div id="results">
+        <span id="probability"></span>% of winning $<span id="reward"></span>;
+    </div>
+
+
+    <br><br>
+    Press on the button below to complete the task.
+
+    <table align="center">
+
+        <tr>
+            <div id="start_button" style="padding-left: 05%">
+                <br>
+                <input type="submit" value="Completion" style="font-size : large;" />
+                <!--<form action="../main.html">-->
+                    <!--<input type="submit" value="Start" style="font-size : large;" />-->
+                <!--</form>-->
+            </div>
+        </tr>
+
+    </table>
+
+</div>
+
+
+
+</body>
+</html>

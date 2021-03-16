@@ -35,6 +35,7 @@ shuffle(TRIAL_LIST);
 let trial_number;
 let current_trial_type;
 const N = TRIAL_LIST.length;
+const user_choices = []; // participants choices as (r, p) tupples.
 
 
 
@@ -126,9 +127,25 @@ function enable_continue_button(){
     //---------------------------------------------------------------------------------
     // Manage choices
     //---------------------------------------------------------------------------------
+function log_risky_choice(is_risky){
+    let p, r;
+    if(is_risky){
+        p = TRIAL_LIST[trial_number][0];
+        r = TRIAL_LIST[trial_number][1];
+    }
+    else{
+        p = DEFAULT_P;
+        r = DEFAULT_R;
+    }
+    user_choices.push('{"p":' + p +', "r":' + r +'}')
+}
+
 function implement_choice(){
     hide_element_with_id('choice_presentation');
     trial_number ++;
+    if(trial_number==N){
+        end_experiment();
+    }
     set_trial_risky_reward_probability();
     unhide_element_with_id('fixation_holder');
     document.getElementById('fixation_text').disabled = false;
@@ -145,14 +162,13 @@ function risky_choice(){
 }
 
 function safe_choice(){
+    user_choices.push([]);
     if(current_trial_type==DEFAULT_TYPE_NON) { // Otherwise, we don't get actual choices just "continue, switch"
         write_trial_then_implement_choice(CHOICE_SAFE);
     }
 }
 
-        //---------------------------------------------------------------------------------
-        // Manage choice in a DEFAULTS trials
-        //---------------------------------------------------------------------------------
+
 function choice_default(){
     if(current_trial_type==DEFAULT_TYPE_SAFE){
         write_trial_then_implement_choice(CHOICE_SAFE);
@@ -169,6 +185,14 @@ function choice_switch(){
     else if(current_trial_type==DEFAULT_TYPE_RISKY){
         write_trial_then_implement_choice(CHOICE_SAFE);
     }
+}
+
+        //---------------------------------------------------------------------------------
+        // End experiment
+        //---------------------------------------------------------------------------------
+function end_experiment(){
+    let random_trial_params = user_choices[Math.floor(Math.random() * user_choices.length)];
+    window.location.href = "instructions/thank_you.html?q=" + btoa(random_trial_params);
 }
 //######################################################################################################################
 // Set default
