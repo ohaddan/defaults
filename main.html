@@ -84,15 +84,32 @@
             </td>
         </tr>
         <tr>
+            <!--images of probabilities and reward: opacity is added to all images since we decided we don't want
+            to diaply them for now-->
+            <div id="images_of_probabilities_and_reward" style="display: none">
             <td id="safe_image" class="img_holder">
-                <img id='safe_probability_image' class="probability_reward_image" src="media/probability_images/p_100.PNG">
-                <img id='safe_reward_image' class="probability_reward_image" src="media/reward_images/r_5.PNG">
+                <img id='safe_probability_image' class="probability_reward_image" src="media/probability_images/p_100.PNG" style="opacity:0.0;filter:alpha(opacity=0);">
+                <img id='safe_reward_image' class="probability_reward_image" src="media/reward_images/r_5.PNG" style="opacity:0;filter:alpha(opacity=0);">
             </td>
             <td class="table_cell_place_holder">&nbsp;</td>
             <td id="risky_image"  class="img_holder">
-                <img id='risky_probability_image' class="probability_reward_image blur_image" src="">
-                <img id='risky_reward_image' class="probability_reward_image blur_image" src="">
+                <img id='risky_probability_image' class="probability_reward_image blur_image" src="" style="opacity:0;filter:alpha(opacity=0);">
+                <img id='risky_reward_image' class="probability_reward_image blur_image" src="" style="opacity:0;filter:alpha(opacity=0);">
             </td>
+            </div>
+
+            <!--&lt;!&ndash;PLACEHOLDERS of probabilities and reward&ndash;&gt;-->
+            <!--<td id="safe_image_PLACEHOLDER" class="img_holder_PLACEHOLDER">-->
+                <!--<img id='safe_probability_image_PLACEHOLDER' class="probability_reward_image" src="media/probability_images/empty_probability.PNG">-->
+                <!--<img id='safe_reward_image_PLACEHOLDER' class="probability_reward_image" src="media/reward_images/empty_reward.PNG">-->
+            <!--</td>-->
+            <!--<td class="table_cell_place_holder">&nbsp;</td>-->
+            <!--<td id="risky_image_PLACEHOLDER"  class="img_holder">-->
+                <!--<img id='risky_probability_image_PLACEHOLDER' class="probability_reward_image" src="empty_probability.PNG">-->
+                <!--<img id='risky_reward_image_PLACEHOLDER' class="probability_reward_image" src="empty_reward.PNG">-->
+            <!--</td>-->
+
+
         </tr>
     </table>
 
