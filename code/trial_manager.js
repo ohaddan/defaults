@@ -2,7 +2,7 @@
 // Constants and initialization
 //######################################################################################################################
 // ########## Constant game definitions
-const RISKY_REWARDS = [5, 6, 7, 8, 10, 12, 14, 16, 19, 23, 27, 31, 37, 44, 52, 61, 73, 86, 101, 120];
+const RISKY_REWARDS = [4, 5, 6, 7, 8, 10, 12, 14, 16, 19, 23, 27, 31, 37, 44, 52, 61, 73, 86, 101, 120];
 const RISKY_PROBABILITIES = [25, 50, 75];
 
 // ########## Constant Namings
@@ -15,7 +15,7 @@ DEFAULT_P = 100;
 DEFAULT_R = 5;
 
 // ########## Constant timings
-const BUTTON_DISABLE_TIME = 1500;
+const BUTTON_DISABLE_TIME = 2000;
 
 // ########## Constant Paths
 const PROBABILITY_IMAGE_PATH = "media/probability_images/";
@@ -36,8 +36,9 @@ const TRIAL_LIST = cartesian(RISKY_PROBABILITIES, RISKY_REWARDS, TRIAL_TYPE);
 shuffle(TRIAL_LIST);
 let trial_number;
 let current_trial_type;
+let trial_presentation_time;
 const N = TRIAL_LIST.length;
-const user_choices = []; // participants choices as (r, p) tupples.
+const user_choices = []; // participants choices as (r, p) tuples.
 
 
 
@@ -94,6 +95,7 @@ function set_trial_risky_reward_probability(){
 }
 
 function next_trial(){
+    trial_presentation_time = get_current_time_in_ms();
     default_reset();
     hide_element_with_id('fixation_holder');
     hide_element_with_id('header_between_trials');
@@ -129,9 +131,9 @@ function enable_continue_button(){
     //---------------------------------------------------------------------------------
     // Manage choices
     //---------------------------------------------------------------------------------
-function log_risky_choice(is_risky){
+function log_risky_choice(is_risky_choice){
     let p, r;
-    if(is_risky){
+    if(is_risky_choice){
         p = TRIAL_LIST[trial_number][0];
         r = TRIAL_LIST[trial_number][1];
     }
@@ -139,7 +141,15 @@ function log_risky_choice(is_risky){
         p = DEFAULT_P;
         r = DEFAULT_R;
     }
-    user_choices.push('{"p":' + p +', "r":' + r +'}')
+    user_choices.push([p, r]);
+
+    let trial_results = {};
+    trial_data['trial_number'] = trial_number;
+    trial_data['p_risky'] = TRIAL_LIST[trial_number][0];
+    trial_data['r_risky'] = TRIAL_LIST[trial_number][1];
+    trial_data['default_type'] = TRIAL_LIST[trial_number][2];
+    trial_data['is_risky_choice'] = is_risky_choice;
+    trial_data['rt'] = get_current_time_in_ms()-trial_presentation_time;
 }
 
 function implement_choice(){
@@ -164,7 +174,6 @@ function risky_choice(){
 }
 
 function safe_choice(){
-    user_choices.push([]);
     if(current_trial_type==DEFAULT_TYPE_NON) { // Otherwise, we don't get actual choices just "continue, switch"
         write_trial_then_implement_choice(CHOICE_SAFE);
     }
