@@ -172,9 +172,11 @@ Fixation between trials
 #fixation_holder{
     width: 40%;
     padding-top: 5%;
-    padding-left: 40%;
+    /*padding-left: 40%;*/
     text-align: center;
     color: #000;
+    display: table;
+    margin: 0 auto;
 }
 
 #fixation_text{

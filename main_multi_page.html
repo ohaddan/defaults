@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="instructions/instructions_style.css">
+    <link rel="stylesheet" href="style/task.css">
+    <script src="code/helper_functions.js"></script>
+    <script src="code/trial_manager.js"></script>
+
+    <!--Scripts for SurveyContainer-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <link href="https://unpkg.com/survey-jquery@1.8.46/modern.css" type="text/css" rel="stylesheet" />
+    <script src="https://unpkg.com/survey-jquery@1.8.46/survey.jquery.min.js"></script>
+    <script type="text/javascript" src="survey/survey.js"></script>
+
+    <script>
+        function hide_element_with_id(id){
+            document.getElementById(id).style.display = 'none';
+        }
+        function show_element_with_id(id){
+            document.getElementById(id).style.display = 'block';
+        }
+        function switch_page(page_title, current_page_id, next_page_id, init_function){
+            hide_element_with_id(current_page_id);
+            if(init_function){
+                init_function();
+            }
+            if (page_title){
+                document.title = page_title;
+            }
+            show_element_with_id(next_page_id);
+        }
+
+        let page_index = 0;
+        class Page {
+            constructor(page_div_id, page_title='', init_function=NaN) {
+                this.page_id = page_div_id;
+                this.page_title = page_title;
+                this.init_function = init_function;
+            }
+        }
+        const PAGES = [
+            new Page("page_instructions", 'Welcome'),
+            new Page("page_experiment", "Choice task", init),
+            new Page("page_demographics", "Demographics"),
+            new Page("page_thankyou", "Thank You", thank_you_display_chosen_trial)];
+
+        function go_next_page(){
+            let next_page = PAGES[page_index+1];
+            switch_page(next_page.page_title, PAGES[page_index].page_id, next_page.page_id, next_page.init_function);
+            page_index +=1;
+        }
+
+        function display_first_page(){
+            PAGES.forEach((page) => {
+                hide_element_with_id(page.page_id);
+            });
+            show_element_with_id(PAGES[0].page_id);
+        }
+    </script>
+
+    <title>Choices task</title>
+</head>
+
+<body onload="display_first_page()">
+
+<div id="page_instructions" style="display: none">
+
+    <div class="left_bar">
+    </div>
+
+    <div class="right_bar">
+    </div>
+
+    <div class="top_bar">
+    </div>
+
+    <div id="page_title">
+        Welcome!
+    </div>
+
+    <div id="instructions"><br>
+        In the following task, you will be presented with pairs of options, and <b>your task is to choose in each pair the
+            option you prefer</b>.
+
+        <br><br>
+        In each trial, you will <b>choose between two amounts of money that can be granted with certain probabilities</b>.
+        For example, you might choose between winning $5 for sure, and some percent of winning a greater prize.
+
+        <br><br>
+        <b>Your choices determine how much bonus you get! </b> At the end of the task, one of the choices you made will be
+        randomly selected, and you will win the amount of money resulting from your choice on that trial.
+
+        <br><br>
+        Please note, there is no right or wrong way to make these choices. Our goal in these questions is to
+        understand your individual preferences. Thus, when making the choices,<b> please answer according to your honest
+        preference</b>. For each choice, please make a decision as if you were approached by a trusted individual, that
+        offered you the two alternatives and then you actually got whatever you chose. As a reminder, one of your
+        choices will indeed be selected and the task-dollars you could choose would be converted to an actual bonus
+        payment.
+
+        <br><br>
+        When you are ready to start, please press the "Start" button.
+
+        <table align="center">
+
+            <tr>
+                <div id="start_button" style="padding-left: 45%">
+                    <br>
+                    <form action="Javascript:go_next_page()">
+                        <input type="submit" value="Start" style="font-size : large;" />
+                    </form>
+                </div>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+<div id="page_experiment" style="display: none">
+    <div class="head_container" class="instruction_text">
+        <!--Here are 3 types of headers that are shown and displayed according to the current trials state:
+            head_free_choice: a free choice without default
+            head_default: header to be presented when a default option is set
+            header_wait: presented between trials-->
+
+        <div id="head_free_choice" style="display: none" class="instruction_text" >
+            <p>Choose the alternative you prefer:</p>
+        </div>
+
+        <div id="head_default" class="instruction_text" style="display: none" >
+            The system has assigned you a choice:
+            <b> <span id="risky_probability_text_head">50%</span>
+                winning
+                <span id='risky_probability_reward_head'>$10</span>
+            </b> <i>(please accept or switch)</i>
+            <p class="center_text"  style="padding-left:15%;">
+            <span>
+                <button  style="padding-left: 5%; padding-right: 5%" id='default_ok_button' class="default_ok"
+                         type="button" onclick="choice_default()">OK</button>
+            </span>
+
+                <span style="padding-left: 10%;">
+                <button class="default_switch" type="button"
+                        onclick="choice_switch()" onmouseover="flash_the_default()" onmouseleave="stop_default_flash()">Choose other alternative</button>
+            </span>
+            </p>
+        </div>
+
+        <div id="header_wait" style="display: none;">
+            <p>Wait...</p>
+        </div>
+        <div id="header_between_trials" style="display: none;">
+            <p>Press to continue:</p>
+        </div>
+    </div>
+
+    <div id="choice_presentation" style="display: none" class="center_text" style="padding-left: 45%">
+        You chose:
+        <br>
+        $<span id="choice_presentation_amount"></span> with <span id="choice_presentation_probability"></span>%
+
+        <div id="fixation_holder">
+            <button type="button" id="fixation_text" onclick="next_trial()">Continue</button>
+        </div>
+
+    </div>
+
+    <!--<div id="fixation_holder" style="display: none">-->
+        <!--<p></p>-->
+        <!--<table>-->
+            <!--<tr>-->
+                <!--<td><button type="button" id="fixation_text" onclick="next_trial()">Continue</button></td>-->
+            <!--</tr>-->
+        <!--</table>-->
+    <!--</div>-->
+
+    <div id="trial_content" style="display: none">
+        <!--<div id="trial_content" style="display: block">-->
+        <table id="DEFAULT_NO">
+            <!--text of gains and probabilities-->
+            <tr>
+                <td id="safe_text" class="lottery_text default_text" onclick="safe_choice()">
+                    <span id="safe_text_probability" class="probability">100%</span>
+                    </br>winning
+                    </br>
+                    <span class="money">$5</span>
+                </td>
+                <td class="table_cell_place_holder">&nbsp;</td>
+                <td id="risky_text" class="lottery_text blur_text" onclick="risky_choice()">
+                    <span id="risky_probability_text_body" class="probability">50%</span>
+                    </br>winning
+                    </br>
+                    <span id="risky_probability_reward_body" class="money">$10</span>
+                </td>
+            </tr>
+            <tr>
+                <!--images of probabilities and reward: opacity is added to all images since we decided we don't want
+                to display them for now-->
+                <div id="images_of_probabilities_and_reward" style="display: none">
+                    <td id="safe_image" class="img_holder">
+                        <img id='safe_probability_image' class="probability_reward_image" src="media/probability_images/p_100.PNG" style="opacity:0.0;filter:alpha(opacity=0);">
+                        <img id='safe_reward_image' class="probability_reward_image" src="media/reward_images/r_5.PNG" style="opacity:0;filter:alpha(opacity=0);">
+                    </td>
+                    <td class="table_cell_place_holder">&nbsp;</td>
+                    <td id="risky_image"  class="img_holder">
+                        <img id='risky_probability_image' class="probability_reward_image blur_image" src="" style="opacity:0;filter:alpha(opacity=0);">
+                        <img id='risky_reward_image' class="probability_reward_image blur_image" src="" style="opacity:0;filter:alpha(opacity=0);">
+                    </td>
+                </div>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<div id="page_demographics">
+    <div id="surveyContainer"></div>
+</div>
+
+<div id="page_thankyou"  style="display: none">
+    <div class="left_bar">
+    </div>
+
+    <div class="right_bar">
+    </div>
+
+    <div class="top_bar">
+    </div>
+
+    <div class="page_title">
+        The task has ended.
+        <br>
+        Thank you for your participation!
+    </div>
+
+    <div class="instructions"><br>
+
+        The trial randomly chosen from your choices is:
+        <div id="results">
+            <span id="thank_you_probability"></span>% of winning $<span id="thank_you_reward"></span>.
+            <br><br>
+            We applied this trial probability and in this trial you <b><span id="thank_you_win_lose"></span></b>
+        </div>
+
+
+        <br><br>
+        Thank you for your participation, please press the button below to completer the task.
+
+        <table align="center">
+
+            <tr>
+                <div style="padding-left: 05%">
+                    <br>
+                    <input type="submit" value="End the task" style="font-size : large;" />
+
+                </div>
+            </tr>
+
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>

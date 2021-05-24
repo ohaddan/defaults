@@ -4,11 +4,23 @@
     margin-right: 10%;
 }
 
+.instructions{
+    font-size: x-large;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
 li{
     line-height: 1.5;
 }
 
 #page_title{
+    font-size: xx-large;
+    margin-left: 10%;
+    padding-top: 5%;
+}
+
+.page_title{
     font-size: xx-large;
     margin-left: 10%;
     padding-top: 5%;

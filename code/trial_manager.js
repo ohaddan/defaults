@@ -95,6 +95,7 @@ function set_trial_risky_reward_probability(){
 }
 
 function next_trial(){
+    hide_element_with_id('choice_presentation');
     trial_presentation_time = get_current_time_in_ms();
     default_reset();
     hide_element_with_id('fixation_holder');
@@ -143,7 +144,7 @@ function log_risky_choice(is_risky_choice){
     }
     user_choices.push([p, r]);
 
-    let trial_results = {};
+    let trial_data = {};
     trial_data['trial_number'] = trial_number;
     trial_data['p_risky'] = TRIAL_LIST[trial_number][0];
     trial_data['r_risky'] = TRIAL_LIST[trial_number][1];
@@ -153,9 +154,8 @@ function log_risky_choice(is_risky_choice){
 }
 
 function implement_choice(){
-    hide_element_with_id('choice_presentation');
     trial_number ++;
-    if(trial_number==N){
+    if(trial_number==N-1){
         end_experiment();
     }
     set_trial_risky_reward_probability();
@@ -202,8 +202,9 @@ function choice_switch(){
         // End experiment
         //---------------------------------------------------------------------------------
 function end_experiment(){
-    let random_trial_params = user_choices[Math.floor(Math.random() * user_choices.length)];
-    window.location.href = "instructions/thank_you.html?q=" + btoa(random_trial_params);
+    // let random_trial_params = user_choices[Math.floor(Math.random() * user_choices.length)];
+    // window.location.href = "instructions/thank_you.html?q=" + btoa(random_trial_params);
+    go_next_page();
 }
 //######################################################################################################################
 // Set default
@@ -220,6 +221,9 @@ function set_free_choice_trial(){
 }
 
 function set_default_safe(){
+    removeClass(document.getElementById("risky_text"), "choice");
+    removeClass(document.getElementById("safe_text"), "choice");
+
     addClass(document.getElementById("risky_text"), "blur_text");
     addClass(document.getElementById("safe_text"), "default_text");
     addClass(document.getElementById("risky_reward_image"), "blur_image");
@@ -227,6 +231,9 @@ function set_default_safe(){
 }
 
 function set_default_risky(){
+    removeClass(document.getElementById("risky_text"), "choice");
+    removeClass(document.getElementById("safe_text"), "choice");
+
     addClass(document.getElementById("safe_text"), "blur_text");
     addClass(document.getElementById("risky_text"), "default_text");
     addClass(document.getElementById("safe_reward_image"), "blur_image");
@@ -249,4 +256,18 @@ function default_reset(){
     for (let i=0; i<trial_images.length; i++){
         removeClass(trial_images[i], "blur_image");
     }
+}
+
+//######################################################################################################################
+// Thank you page
+//######################################################################################################################
+function thank_you_display_chosen_trial(){
+    let random_trial_params = user_choices[Math.floor(Math.random() * user_choices.length)];
+    let p = random_trial_params[0];
+    let r = random_trial_params[1];
+
+    document.getElementById('thank_you_probability').innerText = p;
+    document.getElementById('thank_you_reward').innerText = r;
+    document.getElementById('thank_you_win_lose').innerText = (Math.random() < p ? 'win' : 'do not with').concat(' a bonus of $', r/10,'.');
+
 }
